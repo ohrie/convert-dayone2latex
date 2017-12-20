@@ -1,0 +1,29 @@
+% adjust papersize & font size here
+\documentclass[a5paper, 12pt, twoside]{book}
+\usepackage[utf8]{inputenc}
+% adjust language here
+\usepackage[german]{babel}
+\usepackage{graphicx}
+% for some LaTeX compiler needed:
+%\DeclareUnicodeCharacter{20AC}{€}
+%\DeclareUnicodeCharacter{B0}{°}
+\usepackage{geometry}
+\usepackage{underscore}
+% need for pandocs LaTeX output
+% hyperref last package!
+\usepackage{hyperref}
+% adjustments to page/margin boundaries
+ \geometry{
+ a5paper,
+ margin=0.7in,
+ tmargin=1in,
+ bmargin=1in
+ }
+
+\title{Tagebuch}
+\author{Autor}
+
+\begin{document}
+\maketitle
+
+\blindtext
