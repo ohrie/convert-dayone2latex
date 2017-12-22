@@ -3,3 +3,7 @@ Journal_output.tex
 *.pdf
 dayone-test/
 small-library/
+*.log
+*.out
+*.synctex.gz
+*.aux

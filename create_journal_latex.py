@@ -17,13 +17,13 @@ def process_file(file):
     current_entry_text = current_entry_text.replace('\section', '\section*')
     current_entry_text = current_entry_text.replace('\subsection', '\subsection*')
     current_entry_text = current_entry_text.replace('\subsubsection', '\subsubsection*')
-    document.write(current_entry_text + '\n')
+    document.write(current_entry_text + '\n%-------------------next-entry-------------------\n')
     print(file + ' converted to latex\n')
 
 # Write content directly in LaTeX output
 document = open('Journal_output.tex', 'w')
 try:
-    template = open(, 'r')
+    template = open(latex_template, 'r')
 except IOError:
     print("Couldn't find Journal template. Exiting.")
     sys.exit()

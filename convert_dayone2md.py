@@ -19,9 +19,15 @@ def convert_file(file):
     print(current_filename + " read")
     # Get journal text
     journal_entry_text = journal_entry['Entry Text'].encode('utf-8')
-    # Add markdown heading
+
     journal_lines = journal_entry_text.splitlines()
+    # Add additional #, because first line is first heading without # markdown -> smaller headings have to add a #
+    for index, line in enumerate(journal_lines):
+        if line.startswith('#'):
+            journal_lines[index] = '#' + line
+    # Add markdown heading for first headline (was implicit in dayone)
     journal_lines[0] = '# ' + journal_lines[0]
+
 
     # Add image url
     for photo in files_photos:
