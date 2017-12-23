@@ -1,6 +1,7 @@
 import plistlib
 import os
 from os import listdir
+from datetime import datetime
 
 # Set directories
 input_dir = "small-library"
@@ -14,9 +15,16 @@ def convert_file(file):
     current_filename = file.split('.')[0]
     print(current_filename + ' started processing')
     files_dayone.append(current_filename)
-    current_file = open(output_dir + '/' + current_filename + '.md', 'w')
     journal_entry = plistlib.readPlist( input_dir + '/entries/'+ current_filename +'.doentry')
     print(current_filename + " read")
+    # start writing markdown file
+    if 'Location' in journal_entry:
+        current_filename = str(journal_entry['Creation Date']) + '+' + journal_entry['Location']['Locality'] + '.md'
+        current_file = open(output_dir + '/' + current_filename, 'w')
+    else:
+        current_filename = str(journal_entry['Creation Date']) + '.md'
+        current_file = open(output_dir + '/' + current_filename, 'w')
+
     # Get journal text
     journal_entry_text = journal_entry['Entry Text'].encode('utf-8')
 
@@ -27,7 +35,6 @@ def convert_file(file):
             journal_lines[index] = '#' + line
     # Add markdown heading for first headline (was implicit in dayone)
     journal_lines[0] = '# ' + journal_lines[0]
-
 
     # Add image url
     for photo in files_photos:
