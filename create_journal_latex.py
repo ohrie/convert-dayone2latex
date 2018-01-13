@@ -1,6 +1,7 @@
 # Need to have: LaTeX Template, pandoc
 
 import os
+import re
 from os import listdir
 
 dir = 'small-library'
@@ -9,20 +10,24 @@ latex_output = 'Journal_output.tex'
 
 def process_file(file):
     filename = file.split('.')[0]
-    if '+' in filename:
-        creation_date = filename.split('+')[0]
-        entry_location = filename.split('+')[1]
-    else:
-        creation_date = filename
 
     # Convert from markdown to LaTeX with pandoc
-    os.system("pandoc -o \"" + dir + '/latex_output/' + filename + '.tex\"  \"' + dir + '/markdown_output/' + filename + '.md\"' )
+    os.system("pandoc --wrap=none -o \"" + dir + '/latex_output/' + filename + '.tex\"  \"' + dir + '/markdown_output/' + filename + '.md\"' )
     current_entry = open(dir + '/latex_output/' + filename + '.tex' , 'r')
     # Replace numbered with unnumbered sections
     current_entry_text = current_entry.read()
     current_entry_text = current_entry_text.replace('\section', '\section*')
     current_entry_text = current_entry_text.replace('\subsection', '\subsection*')
     current_entry_text = current_entry_text.replace('\subsubsection', '\subsubsection*')
+
+    if '+' in filename:
+        creation_date = filename.split('+')[0]
+        entry_location = filename.split('+')[1]
+        current_entry_text = re.sub(r"(\\section\*{.*})", r"\1\n\\textbf{" + creation_date + r"} \\textit{" + entry_location + r"}\\\\", current_entry_text)
+    else:
+        creation_date = filename
+        current_entry_text = re.sub(r"(\\section\*{.*})", r"\1 \n\\textbf{" + creation_date + r"}", current_entry_text)
+
     document.write(current_entry_text + '\n%-------------------next-entry-------------------\n')
     print(file + ' converted to latex\n')
 

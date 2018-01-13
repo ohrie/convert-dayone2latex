@@ -1,5 +1,6 @@
 # README
-This scripts converts a DayOne v1 Diary from this .doentry (plist) to an more readable markdown and then to LaTeX. It creates a book.
+This scripts converts a DayOne v1 Diary from this .doentry (plist) to a pdf.
+First it creates more readable Markdown files, then LaTeX. Then a pdf of the specified files will be created. It creates a book.
 
 ## How to Use
 1. setup folders / adjust folder paths
@@ -10,9 +11,3 @@ This scripts converts a DayOne v1 Diary from this .doentry (plist) to an more re
 ## DayOne File Structure
 How to find Images-> Images are in the "photos" directory and have the identical UUID as the text files.
 First Line is mostly none heading. Need to added a markdown heading.
-
-## Convert information
-When converting Markdown to LaTeX -> add --warp=none to not wrap text in Source code.
-
-## Ideas for Problems
-Numbered sections -> iterate through each file when processing with python and replace \section{} with \section*{}
