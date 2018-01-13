@@ -1,7 +1,6 @@
 import plistlib
 import os
 from os import listdir
-from datetime import datetime
 
 # Set directories
 input_dir = "small-library"
@@ -50,6 +49,9 @@ def convert_file(file):
 
 print('found ' + str(len(files_entries)) + ' files in ' + input_dir + '/entries')
 print('found ' + str(len(files_photos)) + ' files (photos) in ' + input_dir + '/photos')
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
+
 number_files = 0
 for file in files_entries:
     if file.endswith('.doentry'):
