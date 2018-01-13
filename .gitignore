@@ -1,5 +1,5 @@
 .DS_Store
-Journal_output.tex
+output/
 *.pdf
 dayone-test/
 small-library/

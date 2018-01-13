@@ -11,7 +11,7 @@ files_dayone = []
 
 def convert_file(file):
     # Get files
-    current_filename = file.split('.')[0]
+    old_filename = current_filename = file.split('.')[0]
     print(current_filename + ' started processing')
     files_dayone.append(current_filename)
     journal_entry = plistlib.readPlist( input_dir + '/entries/'+ current_filename +'.doentry')
@@ -37,8 +37,8 @@ def convert_file(file):
 
     # Add image url
     for photo in files_photos:
-        if photo.startswith(current_filename):
-            journal_lines.insert(1, '\includegraphics[width=\\textwidth]{' + input_dir + '/photos/' + current_filename + '.jpg}')
+        if photo.startswith(old_filename):
+            journal_lines.insert(1, '\includegraphics[width=\\textwidth]{../' + input_dir + '/photos/' + old_filename + '.jpg}')
 
     journal_entry_text = '\n'.join(journal_lines)
     print(current_filename + " processed")
