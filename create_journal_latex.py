@@ -1,4 +1,4 @@
-# Need to have: LaTeX Template, pandoc
+#!/usr/bin/env python
 
 import os
 import re
@@ -12,7 +12,6 @@ latex_template = 'Journal_template.tex'
 latex_output = 'Journal_output.tex'
 output_file_folder = 'output/'
 output_dir = 'latex_output/'
-author = "Henri Chilla"
 locale.setlocale(locale.LC_ALL, "de_DE")
 
 def get_date_of_filename(filename):
@@ -48,6 +47,7 @@ def process_file(file):
 # Set arguments
 parser = argparse.ArgumentParser(description="Converts Markdown files to one LaTeX file. For DayOne dairy conversion.")
 parser.add_argument("-y", "--year", help="Only output entries of a specific year.", type=int, dest='year')
+parser.add_argument("-a", "--author", help="Add the Authors name.", type=str, dest='author')
 args = parser.parse_args()
 if args.year:
     print "Year " + str(args.year) + " will be processed.\n"
@@ -77,7 +77,8 @@ for file in files_entries:
 
 template_tex = template.read()
 # Add author
-template_tex = re.sub(r"\\author{\w*}", r"\\author{" + author + "}", template_tex)
+if args.author:
+    template_tex = re.sub(r"\\author{\w*}", r"\\author{" + args.author + "}", template_tex)
 # Add correct date
 date_format = "%Y-%m-%d %H:%M:%S"
 if args.year:

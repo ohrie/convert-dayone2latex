@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import plistlib
 import os
 from os import listdir
