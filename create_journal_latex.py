@@ -1,30 +1,46 @@
 #!/usr/bin/env python
 
 import os
+import sys
 import re
 from os import listdir
 from datetime import datetime
 import locale
 import argparse
 
+# Set arguments
+parser = argparse.ArgumentParser(description="Converts Markdown files to one LaTeX file. For DayOne dairy conversion.")
+parser.add_argument("-y", "--year", help="Only output entries of a specific year.", type=int, dest='year')
+parser.add_argument("-a", "--author", help="Add the Authors name.", type=str, dest='author')
+parser.add_argument("-i", "--input", help="Input directory", type=str, dest='input_dir')
+args = parser.parse_args()
+
+# Set directories
 dir = 'small-library'
+if args.input_dir:
+    dir = args.input_dir
 latex_template = 'Journal_template.tex'
 latex_output = 'Journal_output.tex'
 output_file_folder = 'output/'
 output_dir = 'latex_output/'
 locale.setlocale(locale.LC_ALL, "de_DE")
 
-def get_date_of_filename(filename):
-    filename = file.split('.')[0]
-    if '+' in filename:
-        date = datetime.strptime(filename.split('+')[0], "%Y-%m-%d %H:%M:%S")
+# Returns the date saved in filename
+def get_date_of_filename(filename_date):
+    filename_date = filename_date.split('.')[0]
+    if '+' in filename_date:
+        date = datetime.strptime(filename_date.split('+')[0], "%Y-%m-%d %H:%M:%S")
     else:
-        date = datetime.strptime(filename, "%Y-%m-%d %H:%M:%S")
+        date = datetime.strptime(filename_date, "%Y-%m-%d %H:%M:%S")
     return date
 
 def process_file(file):
     filename = file.split('.')[0]
     # Convert from markdown to LaTeX with pandoc
+    if not os.path.exists(dir + '/' + output_dir):
+        os.makedirs(dir + '/' + output_dir)
+    if not os.path.exists(dir + '/' + '/markdown_output/'):
+        os.makedirs(dir + '/' + '/markdown_output/')
     os.system("pandoc --wrap=none -o \"" + dir + '/' + output_dir + filename + '.tex\"  \"' + dir + '/markdown_output/' + filename + '.md\"' )
     current_entry = open(dir + '/' + output_dir + filename + '.tex' , 'r')
     current_entry_text = current_entry.read()
@@ -44,11 +60,7 @@ def process_file(file):
     document.write(current_entry_text + '\n%-------------------next-entry-------------------\n')
     print(file + ' converted to latex\n')
 
-# Set arguments
-parser = argparse.ArgumentParser(description="Converts Markdown files to one LaTeX file. For DayOne dairy conversion.")
-parser.add_argument("-y", "--year", help="Only output entries of a specific year.", type=int, dest='year')
-parser.add_argument("-a", "--author", help="Add the Authors name.", type=str, dest='author')
-args = parser.parse_args()
+# If year is set per argument -> print this info
 if args.year:
     print "Year " + str(args.year) + " will be processed.\n"
 
@@ -65,7 +77,7 @@ try:
 except IOError:
     print("Couldn't find Journal template. Exiting.")
     sys.exit()
-print('read journal template')
+print('Read journal template.')
 
 files_entries = listdir(dir + '/markdown_output')
 # sort list by datetime
@@ -76,11 +88,12 @@ for file in files_entries:
         files_entries.remove(file)
 
 template_tex = template.read()
-# Add author
+
+# Add author at title page
 if args.author:
     template_tex = re.sub(r"\\author{\w*}", r"\\author{" + args.author + "}", template_tex)
-# Add correct date
-date_format = "%Y-%m-%d %H:%M:%S"
+
+# Add correct date at title page
 if args.year:
     template_tex = re.sub(r"\\date{\w*}", r"\\date{" + str(args.year) + "}", template_tex)
 else:
@@ -88,9 +101,11 @@ else:
 
 document.write(template_tex + '\n')
 
+# Iterate each file in folder
 for file in files_entries:
     if not args.year:
         process_file(file)
+    # Process only files which year is the one in argument
     else:
         creation_date = get_date_of_filename(file)
         if args.year == creation_date.year:

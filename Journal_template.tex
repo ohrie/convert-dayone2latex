@@ -10,6 +10,9 @@
 \usepackage[ a5paper, margin=0.7in, tmargin=1in, rmargin=0.7in, lmargin=0.7in, bmargin=1in, centering = true]{geometry}
 \usepackage{underscore}
 \usepackage{titlesec}
+%Pandoc creates a tightlist function, which is unkown in XeLaTeX
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 % need for pandocs LaTeX output
 % hyperref last package!
 \usepackage{hyperref}
