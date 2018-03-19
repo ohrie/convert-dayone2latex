@@ -4,15 +4,20 @@
 % adjust language here
 \usepackage[german]{babel}
 \usepackage{graphicx}
+\usepackage{grffile}
 % for some LaTeX compiler needed:
 %\DeclareUnicodeCharacter{20AC}{€}
 %\DeclareUnicodeCharacter{B0}{°}
-\usepackage[ a5paper, margin=0.7in, tmargin=1in, rmargin=0.7in, lmargin=0.7in, bmargin=1in, centering = true]{geometry}
+\usepackage[paperwidth=154mm, paperheight=216mm, margin=0.7in, tmargin=0.9in, rmargin=0.6in, lmargin=0.6in, bmargin=0.9in, centering = true]{geometry}
 \usepackage{underscore}
 \usepackage{titlesec}
 %Pandoc creates a tightlist function, which is unkown in XeLaTeX
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+% Remove unwanted whitespace
+\raggedbottom
+% Change Warning trigger value
+\hbadness=10000
 % need for pandocs LaTeX output
 % hyperref last package!
 \usepackage{hyperref}

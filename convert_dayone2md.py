@@ -13,7 +13,6 @@ args = parser.parse_args()
 
 # Set directories
 input_dir = "small-library"
-
 if args.input_dir:
     input_dir = args.input_dir
 output_dir = input_dir + "/markdown_output"
@@ -63,7 +62,7 @@ def convert_file(file):
     # Add image url
     for photo in files_photos:
         if photo.startswith(old_filename):
-            journal_lines.insert(1, '\\noindent \includegraphics[width=\\textwidth]{../' + input_dir + '/photos/' + old_filename + '.jpg}')
+            journal_lines.insert(1, '\\noindent \includegraphics[width=\\textwidth]{' + input_dir + '/photos/' + old_filename + '.jpg}')
 
     journal_entry_text = '\n'.join(journal_lines)
     print(current_filename + " processed")
