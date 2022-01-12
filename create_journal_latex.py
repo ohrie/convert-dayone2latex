@@ -54,7 +54,8 @@ def process_file(file):
         os.makedirs(dir + '/' + output_dir)
     if not os.path.exists(dir + '/' + markdown_files_dir):
         os.makedirs(dir + '/' + markdown_files_dir)
-    os.system("pandoc --wrap=none -o \"" + dir + '/' + output_dir + filename + '.tex\"  \"' + dir + markdown_files_dir + filename + '.md\"' )
+    if args.only_output is False:
+        os.system("pandoc --wrap=none -o \"" + dir + '/' + output_dir + filename + '.tex\"  \"' + dir + markdown_files_dir + filename + '.md\"' )
     current_entry = open(dir + '/' + output_dir + filename + '.tex' , 'r')
     current_entry_text = current_entry.read()
 
@@ -71,7 +72,10 @@ def process_file(file):
     current_entry_text = current_entry_text.replace('\subsection', '\subsection*')
     current_entry_text = current_entry_text.replace('\subsubsection', '\subsubsection*')
     document.write(current_entry_text + '\n%-------------------next-entry-------------------\n')
-    print(file + ' converted to latex\n')
+    if args.only_output is False:
+        print(file + ' converted and inserted to latex file.\n')
+    else:
+        print(file + ' read and inserted to latex file.\n')
 
 def check_to_process():
     if not args.year:
@@ -135,8 +139,10 @@ for file in files_entries:
         check_to_process()
     elif os.path.exists(dir + markdown_files_dir + file) and args.to_overwrite is True:
         check_to_process()
+    elif os.path.exists(dir + markdown_files_dir + file) and args.to_overwrite is False and args.only_output is True:
+        check_to_process()
     else:
         continue
 
 document.write('\n\\end{document}')
-print('writed journal_output.tex\nFinished.')
+print('Writed journal_output.tex to '+ output_file_folder +'\nFinished work.')
